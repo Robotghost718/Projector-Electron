@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "serialport": "^7.1.5",
-        "tableify": "^1.1.0"
+        "tableify": "^1.1.0",
+        "jquery": "^3.5.1"
     }
 }

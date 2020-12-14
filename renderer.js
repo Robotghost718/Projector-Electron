@@ -2,7 +2,7 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-// window.$ = window.jQuery = require('jquery')
+
 // window.Tether = require('tether')
 // window.Bootstrap = require('bootstrap')
 const serialPort = require('serialport')
@@ -348,7 +348,7 @@ document.getElementById("volumeBar").addEventListener("input", function() {
 //   }
 //   });
 //   //Clock
-//   var interval = setInterval(timestamphome, 1000);
+  var interval = setInterval(timestamphome, 1000);
   
   
   
