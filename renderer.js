@@ -44,15 +44,75 @@ document.getElementById("volume_Icon").addEventListener("click", function() {
     if (document.getElementById("volume_Icon").value=="unmuted") {
         document.getElementById("volume_Icon").value = "muted"
         document.getElementById("volume_Icon").setAttribute('src',"images/Volume_Mute.svg")
+        document.getElementById("volumeBar").classList.add("mute")
         writeonSer("\x03")
     }
     else if (document.getElementById("volume_Icon").value=="muted") {
         document.getElementById("volume_Icon").value = "unmuted"
         document.getElementById("volume_Icon").setAttribute('src',"images/Volume.svg")
+        document.getElementById("volumeBar").classList.remove("mute")
         writeonSer("\x03")
     }
    
 } );
+document.getElementById("volumeBar").addEventListener("input", function() {
+        if(this.value < 1) {
+          writeonSer('\x03')  
+        }
+        else if(this.value <= 5) {
+            writeonSer("\x03")
+        }
+        else if(this.value <= 10) {
+            writeonSer("\x03")
+        }
+        else if(this.value <= 15) {
+            writeonSer("\x03")
+        }
+        else if(this.value <= 20) {
+            writeonSer("\x03")
+        }
+        else if(this.value <= 25) {
+            writeonSer("\x03")
+        }
+        else if(this.value <= 30) {
+            writeonSer("\x03")
+        }
+        else if(this.value <= 35) {
+            writeonSer("\x03")
+        }
+        else if(this.value <= 40) {
+            writeonSer("\x03")
+        }
+        else if(this.value <= 45) {
+            writeonSer("\x03")
+        }
+        else if(this.value <= 50) {
+            writeonSer("\x03")
+        }
+        else if(this.value <= 55) {
+            writeonSer("\x03")
+        }else if(this.value <= 60) {
+            writeonSer("\x03")
+        }else if(this.value <= 65) {
+            writeonSer("\x03")
+        }else if(this.value <= 70) {
+            writeonSer("\x03")
+        }else if(this.value <= 75) {
+            writeonSer("\x03")
+        }else if(this.value <= 80) {
+            writeonSer("\x03")
+        }else if(this.value <= 85) {
+            writeonSer("\x03")
+        }else if(this.value <= 90) {
+            writeonSer("\x03")
+        }
+        else if(this.value <= 95) {
+            writeonSer("\x03")
+        }else if(this.value <= 100) {
+            writeonSer("\x03")
+        }
+
+})
 // //1st input button
 // $(document).ready(function(){
 //     $(document).on('click', 'button:button[id^="Computer"]', function (event) {
