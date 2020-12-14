@@ -39,7 +39,20 @@ document.getElementById("PJ_ON").addEventListener("click", function() {
        }
    
 } );
- 
+document.getElementById("volume_Icon").addEventListener("click", function() {
+
+    if (document.getElementById("volume_Icon").value=="unmuted") {
+        document.getElementById("volume_Icon").value = "muted"
+        document.getElementById("volume_Icon").setAttribute('src',"images/Volume_Mute.svg")
+        writeonSer("\x03")
+    }
+    else if (document.getElementById("volume_Icon").value=="muted") {
+        document.getElementById("volume_Icon").value = "unmuted"
+        document.getElementById("volume_Icon").setAttribute('src',"images/Volume.svg")
+        writeonSer("\x03")
+    }
+   
+} );
 // //1st input button
 // $(document).ready(function(){
 //     $(document).on('click', 'button:button[id^="Computer"]', function (event) {
@@ -280,15 +293,14 @@ document.getElementById("PJ_ON").addEventListener("click", function() {
   
   
   
-//    function timestamphome(){
-//    var date;
-//   date = new Date();
+   function timestamphome(){
+   var date;
+  date = new Date();
   
    
-//    var time = document.getElementById('clock'); 
-//    time.innerHTML = date.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: true});
+   var time = document.getElementById('clock'); 
+   time.innerHTML = date.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: true});
   
   
-//     }
-//   });
+    };
   
