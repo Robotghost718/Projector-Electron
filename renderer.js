@@ -7,6 +7,9 @@
 // window.Bootstrap = require('bootstrap')
 const serialPort = require('serialport')
 const Readline = serialPort.parsers.Readline
+var dgram = require('dgram');
+var s = dgram.createSocket('udp4');
+
 var sp = new serialPort('/dev/tty.usbserial-AK08TZHG', {
             baudRate: 115200,
         });
@@ -29,6 +32,7 @@ document.getElementById("PJ_ON").addEventListener("click", function() {
         document.getElementById("top-background").style.backgroundColor = "#cccccc"
         document.getElementById("PJ_ON").style.backgroundColor = "#7cb342"
         writeonSer("\x03")
+        s.send(Buffer.from('abc'), 8080, 'localhost')
     }
     else if (document.getElementById("PJ_ON").value=="ON") {
        document.getElementById("PJ_ON").innerText = "Turn Off Projector"
@@ -36,6 +40,7 @@ document.getElementById("PJ_ON").addEventListener("click", function() {
        document.getElementById("PJ_ON").style.backgroundColor = "#808080"
        document.getElementById("top-background").style.backgroundColor = "#7cb342"
        writeonSer("\x03")
+       s.send(Buffer.from('abc'), 8080, 'localhost')
        }
    
 } );

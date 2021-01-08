@@ -6,7 +6,7 @@ const BrowserWindow = electron.BrowserWindow
 
 const path = require('path')
 const url = require('url')
-
+const net = require('net')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
@@ -63,3 +63,27 @@ app.on('activate', function() {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+ /* Instance socket on create window */
+ console.log('Try to connect');
+ socketClient = net.connect({host:'192.16.122.3', port:9042},  () => {
+   // 'connect' listener
+   console.log('connected to server!');
+   socketClient.write('world!\r\n');
+ });
+
+ socketClient.on('data', (data) => {
+   console.log(data.toString());
+   var person = JSON.parse(data);
+
+   console.log('Hello '+person.prenom+"!");
+
+ });
+ socketClient.on('end', () => {
+   console.log('disconnected from server');
+ });
+
+ //mainWindow.openDevTools();
+
+app.on('before-quit',function(){
+ socketClient.end();
+})
