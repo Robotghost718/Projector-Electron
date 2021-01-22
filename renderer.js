@@ -7,12 +7,24 @@
 // window.Bootstrap = require('bootstrap')
 const serialPort = require('serialport')
 const Readline = serialPort.parsers.Readline
-var dgram = require('dgram');
-var s = dgram.createSocket('udp4');
+var dgram = require('dgram')
+var s = dgram.createSocket('udp4')
+//set hearbeat message with setinterval 20 secs, clear interval of function, 
+//have seperate variable for counter that goes up with each message, every message function must add to counter, counter must reset once it's reached 255
+//let msgCounter = 0
 
+//MAC address of the raspberry pi 
+let piMac = "787B8AD27DB6"
+
+//heartbeat message function
+function heartBeat() {
+    s.send(Buffer.from(`ENTR${piMac}020\x03`), 5555, '172.17.5.217')
+};
+//heartbeat interval (every 20 seconds)
+var hbInterval = setInterval(heartBeat, 20000)
 var sp = new serialPort('/dev/tty.usbserial-AK08TZHG', {
             baudRate: 115200,
-        });
+        })
 function writeonSer(data){
             //Write the data to serial port.
             sp.write( data, function(err) {
@@ -22,7 +34,7 @@ function writeonSer(data){
                 console.log('message written')
             })
     
-        };
+        }
 
 document.getElementById("PJ_ON").addEventListener("click", function() {
 
