@@ -15,11 +15,11 @@ var s = dgram.createSocket('udp4')
 //let msgCounter = 0
 
 // The port on which the server is listening.
-const port = 8124;
+const port = 5555;
 
 // Use net.createServer() in your code. This is just for illustration purpose.
 // Create a new TCP server.
-const server = new net.server();
+const server = new net.createServer();
 // The server listens to a socket for a client to make a connection request.
 // Think of a socket as an end point.
 server.listen(port, function() {
