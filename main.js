@@ -65,7 +65,7 @@ app.on('activate', function() {
 // code. You can also put them in separate files and require them here.
  /* Instance socket on create window */
 //  console.log('Try to connect');
-//  socketClient = net.connect({host:'192.16.122.3', port:9042},  () => {
+//  socketClient = net.connect({host:'localhost', port:9042},  () => {
 //    // 'connect' listener
 //    console.log('connected to server!');
 //    socketClient.write('world!\r\n');
@@ -82,7 +82,7 @@ app.on('activate', function() {
 //    console.log('disconnected from server');
 //  });
 
-//  //mainWindow.openDevTools();
+// //  mainWindow.openDevTools();
 
 // app.on('before-quit',function(){
 //  socketClient.end();

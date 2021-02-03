@@ -6,6 +6,7 @@
 // window.Tether = require('tether')
 // window.Bootstrap = require('bootstrap')
 const serialPort = require('serialport')
+const net = require('net');
 const Readline = serialPort.parsers.Readline
 var dgram = require('dgram')
 var s = dgram.createSocket('udp4')
@@ -13,7 +14,61 @@ var s = dgram.createSocket('udp4')
 //have seperate variable for counter that goes up with each message, every message function must add to counter, counter must reset once it's reached 255
 //let msgCounter = 0
 
-//MAC address of the raspberry pi 
+// The port on which the server is listening.
+const port = 8124;
+
+// Use net.createServer() in your code. This is just for illustration purpose.
+// Create a new TCP server.
+const server = new net.server();
+// The server listens to a socket for a client to make a connection request.
+// Think of a socket as an end point.
+server.listen(port, function() {
+    console.log(`Server listening for connection requests on socket localhost:${port}.`);
+});
+
+// When a client requests a connection with the server, the server creates a new
+// socket dedicated to that client.
+server.on('connection', function(socket) {
+    console.log('A new connection has been established.');
+
+    // Now that a TCP connection has been established, the server can send data to
+    // the client by writing to its socket.
+    socket.write('Hello, client.');
+
+    // The server can also receive data from the client by reading from its socket.
+    socket.on('data', function(chunk) {
+        console.log(`Data received from client: ${chunk.toString()}`);
+    });
+
+    // When the client requests to end the TCP connection with the server, the server
+    // ends the connection.
+    socket.on('end', function() {
+        console.log('Closing connection with the client');
+    });
+
+    // Don't forget to catch error, for your own sake.
+    socket.on('error', function(err) {
+        console.log(`Error: ${err}`);
+    });
+});
+
+
+// const server = net.createServer((c) => {
+//     // 'connection' listener.
+//     console.log('client connected');
+//     c.on('end', () => {
+//       console.log('client disconnected');
+//     });
+//     c.write('hello\r\n');
+//     c.pipe(c);
+//   });
+//   server.on('error', (err) => {
+//     throw err;
+//   });
+//   server.listen(8124, '172.16.69.',() => {
+//     console.log('server bound');
+//   });
+//MAC address of the raspberry pi without dashes or colons  
 let piMac = "787B8AD27DB6"
 
 //heartbeat message function
