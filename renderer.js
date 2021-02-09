@@ -8,14 +8,24 @@
 const serialPort = require('serialport')
 const net = require('net');
 const Readline = serialPort.parsers.Readline
-var dgram = require('dgram')
+var dgram = require('dgram');
 var s = dgram.createSocket('udp4')
 //set hearbeat message with setinterval 20 secs, clear interval of function, 
 //have seperate variable for counter that goes up with each message, every message function must add to counter, counter must reset once it's reached 255
-//let msgCounter = 0
+let msgCounter = 0
+let counterFormat = function(x){
+
+return x.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false})
+}
+let counterReset = function () { 
+    if (msgCounter > 255){ 
+    msgCounter = 0
+}
+}
 
 // The port on which the server is listening.
 const port = 5555;
+
 
 // Use net.createServer() in your code. This is just for illustration purpose.
 // Create a new TCP server.
@@ -53,30 +63,18 @@ server.on('connection', function(socket) {
 });
 
 
-// const server = net.createServer((c) => {
-//     // 'connection' listener.
-//     console.log('client connected');
-//     c.on('end', () => {
-//       console.log('client disconnected');
-//     });
-//     c.write('hello\r\n');
-//     c.pipe(c);
-//   });
-//   server.on('error', (err) => {
-//     throw err;
-//   });
-//   server.listen(8124, '172.16.69.',() => {
-//     console.log('server bound');
-//   });
 //MAC address of the raspberry pi without dashes or colons  
-let piMac = "787B8AD27DB6"
+let piMac = `787B8AD27DB6`
 
 //heartbeat message function
 function heartBeat() {
-    s.send(Buffer.from(`ENTR${piMac}020\x03`), 5555, '172.17.5.217')
+    s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}\x03`), /*5555*/8080, 'localhost'/*'172.17.5.217'*/)
+    msgCounter+=50
+    counterReset()
+
 };
 //heartbeat interval (every 20 seconds)
-var hbInterval = setInterval(heartBeat, 20000)
+var hbInterval = setInterval(heartBeat, 1000)
 var sp = new serialPort('/dev/tty.usbserial-AK08TZHG', {
             baudRate: 115200,
         })
