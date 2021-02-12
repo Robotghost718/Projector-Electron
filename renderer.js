@@ -68,8 +68,8 @@ let piMac = `787B8AD27DB6`
 
 //heartbeat message function
 function heartBeat() {
-    s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}\x03`), /*5555*/8080, 'localhost'/*'172.17.5.217'*/)
-    msgCounter+=50
+    s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}\x03`), 5555, '172.17.5.217')
+    msgCounter++
     counterReset()
 
 };
@@ -88,6 +88,15 @@ function writeonSer(data){
             })
     
         }
+function Device(name, idNumber, source, lampHours, powerState){
+    this.name = name
+    this.idNumber = idNumber
+    this.source = source
+    this.lampHours = lampHours
+    this.powerState = powerState
+}
+
+let projector = new Device('test projector', 2, '', '', '')
 
 document.getElementById("PJ_ON").addEventListener("click", function() {
 
@@ -97,7 +106,11 @@ document.getElementById("PJ_ON").addEventListener("click", function() {
         document.getElementById("top-background").style.backgroundColor = "#cccccc"
         document.getElementById("PJ_ON").style.backgroundColor = "#7cb342"
         writeonSer("\x03")
-        s.send(Buffer.from('abc'), 8080, 'localhost')
+        projector.powerState = 0
+        s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~17=${projector.powerState}]\x03`), 5555, '172.17.5.217')
+        msgCounter++
+        clearInterval(hbInterval)
+        var hbInterval = setInterval(heartBeat, 1000)
     }
     else if (document.getElementById("PJ_ON").value=="ON") {
        document.getElementById("PJ_ON").innerText = "Turn Off Projector"
@@ -105,7 +118,11 @@ document.getElementById("PJ_ON").addEventListener("click", function() {
        document.getElementById("PJ_ON").style.backgroundColor = "#808080"
        document.getElementById("top-background").style.backgroundColor = "#7cb342"
        writeonSer("\x03")
-       s.send(Buffer.from('abc'), 8080, 'localhost')
+       projector.powerState = 1
+       s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~17=${projector.powerState}]\x03`), 5555, '172.17.5.217')
+       msgCounter++
+       clearInterval(hbInterval)
+       var hbInterval = setInterval(heartBeat, 1000)
        }
    
 } );
