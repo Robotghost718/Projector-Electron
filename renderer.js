@@ -86,7 +86,9 @@ function writeonSer(data){
                 }
                 console.log('message written')
             })
-    
+            sp.on('readable', function () {
+                console.log('Data:', sp.read())
+              })
         }
 function Device(name, idNumber, source, lampHours, powerState){
     this.name = name
