@@ -7,7 +7,9 @@
 // window.Bootstrap = require('bootstrap')
 const serialPort = require('serialport')
 const net = require('net');
-const Readline = serialPort.parsers.Readline
+const Readline = require('@serialport/parser-readline')
+const ByteLength = require('@serialport/parser-byte-length')
+const Delimiter = require('@serialport/parser-delimiter')
 var dgram = require('dgram');
 var s = dgram.createSocket('udp4')
 //set hearbeat message with setinterval 20 secs, clear interval of function, 
@@ -73,11 +75,46 @@ function heartBeat() {
     counterReset()
 
 };
+
 //heartbeat interval (every 20 seconds)
 var hbInterval = setInterval(heartBeat, 1000)
-var sp = new serialPort('/dev/tty.usbserial-AK08TZHG', {
-            baudRate: 115200,
+var sp = new serialPort('/dev/tty.usbserial-AB0KEBAK', {
+            baudRate: 9600,
+            stopBits: 1,
+            dataBits: 8, 
+            parity: 'none' 
         })
+function Device(name, idNumber, source, lampHours, powerState, opTime){
+            this.name = name
+            this.idNumber = idNumber
+            this.source = source
+            this.lampHours = lampHours
+            this.powerState = powerState
+            this.opTime = opTime
+        }
+        
+var projector = new Device('test projector', 2, '', '', '', '')
+// const parser = sp.pipe(new ByteLength({length: 8}))
+// parser.on('data', console.log)
+const parser = sp.pipe(new Delimiter({ delimiter: ':' }))
+function readonSer(){
+    parser.on('data', function (data) {
+        let dataString = data.toString("ascii")
+        let numResponse = dataString.match(/\d+/)
+        if (dataString.includes("LAMP") == true ) {
+            projector.lampHours = numResponse[0]
+            console.log(parseInt(numResponse[0]))
+            console.log(projector.lampHours)
+        }
+        else {
+            console.log(dataString)
+            console.log(dataString.includes("LAMP"))
+        }
+})
+}
+
+
+readonSer()
 function writeonSer(data){
             //Write the data to serial port.
             sp.write( data, function(err) {
@@ -86,19 +123,11 @@ function writeonSer(data){
                 }
                 console.log('message written')
             })
-            sp.on('readable', function () {
-                console.log('Data:', sp.read())
-              })
+//             sp.on('data', function (data) {
+//                 console.log('Data:', data)
+// })
         }
-function Device(name, idNumber, source, lampHours, powerState){
-    this.name = name
-    this.idNumber = idNumber
-    this.source = source
-    this.lampHours = lampHours
-    this.powerState = powerState
-}
 
-let projector = new Device('test projector', 2, '', '', '')
 
 document.getElementById("PJ_ON").addEventListener("click", function() {
 
@@ -107,7 +136,7 @@ document.getElementById("PJ_ON").addEventListener("click", function() {
         document.getElementById("PJ_ON").value = "ON"
         document.getElementById("top-background").style.backgroundColor = "#cccccc"
         document.getElementById("PJ_ON").style.backgroundColor = "#7cb342"
-        writeonSer("\x03")
+        writeonSer("PWR?\r")
         projector.powerState = 0
         s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~17=${projector.powerState}]\x03`), 5555, '172.17.5.217')
         msgCounter++
@@ -119,9 +148,12 @@ document.getElementById("PJ_ON").addEventListener("click", function() {
        document.getElementById("PJ_ON").value = "OFF"
        document.getElementById("PJ_ON").style.backgroundColor = "#808080"
        document.getElementById("top-background").style.backgroundColor = "#7cb342"
-       writeonSer("\x03")
+    //    writeonSer("PWR?\r")
+       writeonSer("LAMP?\r")
        projector.powerState = 1
+       console.log(projector.lampHours)
        s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~17=${projector.powerState}]\x03`), 5555, '172.17.5.217')
+       s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~20=${projector.lampHours}]\x03`), 5555, '172.17.5.217')
        msgCounter++
        clearInterval(hbInterval)
        var hbInterval = setInterval(heartBeat, 1000)
