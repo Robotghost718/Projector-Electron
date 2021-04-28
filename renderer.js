@@ -84,15 +84,16 @@ const sp = new serialPort('/dev/tty.usbserial-AB0KEBAK', {
             dataBits: 8, 
             parity: 'none' 
         })
-function Device(name, idNumber, source, lampHours, powerState){
+function Device(name, idNumber, source, lampHours, powerState, comState){
             this.name = name
             this.idNumber = idNumber
             this.source = source
             this.lampHours = lampHours
             this.powerState = powerState
+            this.comState = comState
         }
         
-const projector = new Device('test projector', 2, '', '', '')
+let projector = new Device('test projector', 2, '', '', '', '')
 // const parser = sp.pipe(new ByteLength({length: 8}))
 // parser.on('data', console.log)
 const parser = sp.pipe(new Delimiter({ delimiter: ':' }))
@@ -101,9 +102,9 @@ function readonSer(){
         let dataString = data.toString("ascii")
         let numResponse = dataString.match(/\d+/)
         if (dataString.includes("LAMP") == true ) {
-            window.projector.lampHours = numResponse[0]
+            projector.lampHours = numResponse[0]
             console.log(parseInt(numResponse[0]))
-            console.log(window.projector.lampHours)
+            console.log(projector.lampHours)
         }
         else {
             console.log(dataString)
@@ -111,7 +112,7 @@ function readonSer(){
         }
 })
 }
-
+            
 
 readonSer()
 function writeonSer(data){
@@ -137,7 +138,8 @@ document.getElementById("PJ_ON").addEventListener("click", function() {
         document.getElementById("PJ_ON").style.backgroundColor = "#7cb342"
         writeonSer("PWR?\r")
         projector.powerState = 0
-        s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~17=${projector.powerState}]\x03`), 5555, '172.17.5.217')
+        projector.comState = 0
+        s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~17=${projector.powerState}~19=${projector.comState}]\x03`), 5555, '172.17.5.217') 
         msgCounter++
         clearInterval(hbInterval)
         var hbInterval = setInterval(heartBeat, 1000)
@@ -150,9 +152,9 @@ document.getElementById("PJ_ON").addEventListener("click", function() {
     //    writeonSer("PWR?\r")
        writeonSer("LAMP?\r")
        projector.powerState = 1
+       projector.comState = 1
        console.log(projector.lampHours)
-       s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~17=${projector.powerState}]\x03`), 5555, '172.17.5.217')
-       s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~20=${projector.lampHours}]\x03`), 5555, '172.17.5.217')
+       s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~17=${projector.powerState}~19=${projector.comState}~20=${projector.lampHours}]\x03`), 5555, '172.17.5.217')
        msgCounter++
        clearInterval(hbInterval)
        var hbInterval = setInterval(heartBeat, 1000)
@@ -237,7 +239,7 @@ document.getElementById("volumeBar").addEventListener("input", function() {
 document.getElementById("Computer").addEventListener("click", function() {
         // Call custom function defined in script
         writeonSer('\x03')
-                   
+        s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~18=Computer]\x03`), 5555, '172.17.5.217')                           
       this.classList.add("selected")
       document.getElementById("DocCam").classList.remove("selected")
       document.getElementById("BluRay").classList.remove("selected")
@@ -246,7 +248,7 @@ document.getElementById("Computer").addEventListener("click", function() {
 document.getElementById("DocCam").addEventListener("click", function() {
     // Call custom function defined in script
     writeonSer('\x03')
-               
+    s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~18=Doc Cam]\x03`), 5555, '172.17.5.217')                         
   this.classList.add("selected")
   document.getElementById("Computer").classList.remove("selected")
   document.getElementById("BluRay").classList.remove("selected")
@@ -255,7 +257,7 @@ document.getElementById("DocCam").addEventListener("click", function() {
 document.getElementById("BluRay").addEventListener("click", function() {
     // Call custom function defined in script
     writeonSer('\x03')
-               
+    s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~18=Blu Ray]\x03`), 5555, '172.17.5.217')             
   this.classList.add("selected")
   document.getElementById("DocCam").classList.remove("selected")
   document.getElementById("Computer").classList.remove("selected")
@@ -264,7 +266,7 @@ document.getElementById("BluRay").addEventListener("click", function() {
 document.getElementById("Laptop").addEventListener("click", function() {
     // Call custom function defined in script
     writeonSer('\x03')
-               
+    s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~18=Laptop]\x03`), 5555, '172.17.5.217')                          
   this.classList.add("selected")
   document.getElementById("DocCam").classList.remove("selected")
   document.getElementById("BluRay").classList.remove("selected")
