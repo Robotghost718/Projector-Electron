@@ -136,21 +136,24 @@ document.getElementById("PJ_ON").addEventListener("click", function() {
         document.getElementById("PJ_ON").value = "ON"
         document.getElementById("top-background").style.backgroundColor = "#cccccc"
         document.getElementById("PJ_ON").style.backgroundColor = "#7cb342"
-        writeonSer("PWR?\r")
+        writeonSer("PWR OFF\r")
+        setTimeout(function() {
+            writeonSer("LAMP?\r");}, 10000)
         projector.powerState = 0
         projector.comState = 0
         s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~17=${projector.powerState}~19=${projector.comState}]\x03`), 5555, '172.17.5.217') 
         msgCounter++
         clearInterval(hbInterval)
-        var hbInterval = setInterval(heartBeat, 1000)
+        var hbInterval = setInterval(heartBeat, 5000)
     }
     else if (document.getElementById("PJ_ON").value=="ON") {
        document.getElementById("PJ_ON").innerText = "Turn Off Projector"
        document.getElementById("PJ_ON").value = "OFF"
        document.getElementById("PJ_ON").style.backgroundColor = "#808080"
        document.getElementById("top-background").style.backgroundColor = "#7cb342"
-    //    writeonSer("PWR?\r")
-       writeonSer("LAMP?\r")
+       writeonSer("PWR ON\r")
+       setTimeout(function(){
+           writeonSer("LAMP?\r")}, 25000)
        projector.powerState = 1
        projector.comState = 1
        console.log(projector.lampHours)
@@ -302,93 +305,7 @@ document.getElementById("Laptop").addEventListener("click", function() {
     }
     $(this).data("clicks", !clicks);
   });
-  //Sound Vollume
-  $('#volumeBar').on('input',function(){
-    var volumeValue = $(this).val();
-   
-      
-  if (volumeValue < 1) {
-    $.get("scripts/Volume/Volume_0.php")
-  } 
-  else if (volumeValue <= 5) {
-     $.get("scripts/Volume/Volume_5.php")
-  
-   }
-  else if (volumeValue <= 10) {
-     $.get("scripts/Volume/Volume_10.php")
-  
-  }
-  else if (volumeValue <= 15) {
-     $.get("scripts/Volume/Volume_15.php")
-  
-   } 
-  else if (volumeValue <= 20)  {
-     $.get("scripts/Volume/Volume_20.php")
-  
-  }
-  else if (volumeValue <= 25) {
-     $.get("scripts/Volume/Volume_25.php")
-  
-   }
-  else if (volumeValue <= 30)  {
-     $.get("scripts/Volume/Volume_30.php")
-  
-  }
-  else if (volumeValue <= 35) {
-     $.get("scripts/Volume/Volume_35.php")
-  
-   }
-  else if (volumeValue <= 40) {
-     $.get("scripts/Volume/Volume_40.php")
-  
-  }
-  else if (volumeValue <= 45) {
-     $.get("scripts/Volume/Volume_45.php")
-  
-   }
-  else if (volumeValue <= 50 ) {
-     $.get("scripts/Volume/Volume_50.php")
-  
-  }
-  else if (volumeValue <= 55) {
-     $.get("scripts/Volume/Volume_55.php")
-  
-   }
-  else if (volumeValue <= 60) {
-       $.get("scripts/Volume/Volume_60.php")
-  }
-  else if (volumeValue <= 65) {
-     $.get("scripts/Volume/Volume_65.php")
-  
-   }
-  else if (volumeValue <= 70) {
-     $.get("scripts/Volume/Volume_70.php")
-  
-  }
-  else if (volumeValue <= 75) {
-     $.get("scripts/Volume/Volume_75.php")
-  
-   }
-  else if (volumeValue <= 80){
-       $.get("scripts/Volume/Volume_80.php")
-  
-  }
-  else if (volumeValue <= 85) {
-     $.get("scripts/Volume/Volume_85.php")
-  
-   }
-  else if (volumeValue <= 90) {
-     $.get("scripts/Volume/Volume_90.php")
-  
-   }
-   else if (volumeValue <= 95) {
-     $.get("scripts/Volume/Volume_95.php")
-  
-   }
-  else {
-     $.get("scripts/Volume/Volume_100.php")
-  }
-  });
+
   //Microphone Volume 
   $('#micBar').on('input', function(){
     var micValue = $(this).val();
