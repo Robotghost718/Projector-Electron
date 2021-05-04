@@ -24,8 +24,30 @@ let counterReset = function () {
     msgCounter = 0
 }
 }
+let piMac = `787B8AD27DB6`
 
+//heartbeat message function
+function heartBeat() {
+    s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}\x03`), 5555, '172.17.5.217')
+    msgCounter++
+    counterReset()
+
+};
+
+//heartbeat interval (every 20 seconds)
+let hbInterval = setInterval(heartBeat, 1000)
 // The port on which the server is listening.
+function Device(name, idNumber, source, lampHours, powerState, comState){
+    this.name = name
+    this.idNumber = idNumber
+    this.source = source
+    this.lampHours = lampHours
+    this.powerState = powerState
+    this.comState = comState
+}
+
+let projector = new Device('test projector', 2, '', '', '', 1)
+
 const port = 5555;
 
 
@@ -49,7 +71,15 @@ server.on('connection', function(socket) {
 
     // The server can also receive data from the client by reading from its socket.
     socket.on('data', function(chunk) {
-        console.log(`Data received from client: ${chunk.toString()}`);
+        
+        if(chunk.toString() === `ENTR${piMac}[0~0=1]`) {
+            s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~17=${projector.powerState}~19=${projector.comState}~20=${projector.lampHours}]\x03`), 5555, '172.17.5.217')
+            console.log("Full Update sent")
+        }
+        else {
+            console.log(`Data received from client: ${chunk.toString()}
+            ENTR${piMac}${counterFormat(msgCounter)}[2~17=${projector.powerState}~19=${projector.comState}~20=${projector.lampHours}]`)
+        }
     });
 
     // When the client requests to end the TCP connection with the server, the server
@@ -66,34 +96,16 @@ server.on('connection', function(socket) {
 
 
 //MAC address of the raspberry pi without dashes or colons  
-let piMac = `787B8AD27DB6`
 
-//heartbeat message function
-function heartBeat() {
-    s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}\x03`), 5555, '172.17.5.217')
-    msgCounter++
-    counterReset()
 
-};
 
-//heartbeat interval (every 20 seconds)
-let hbInterval = setInterval(heartBeat, 1000)
 const sp = new serialPort('/dev/tty.usbserial-AB0KEBAK', {
             baudRate: 9600,
             stopBits: 1,
             dataBits: 8, 
             parity: 'none' 
         })
-function Device(name, idNumber, source, lampHours, powerState, comState){
-            this.name = name
-            this.idNumber = idNumber
-            this.source = source
-            this.lampHours = lampHours
-            this.powerState = powerState
-            this.comState = comState
-        }
-        
-let projector = new Device('test projector', 2, '', '', '', '')
+
 // const parser = sp.pipe(new ByteLength({length: 8}))
 // parser.on('data', console.log)
 const parser = sp.pipe(new Delimiter({ delimiter: ':' }))
