@@ -35,7 +35,7 @@ function heartBeat() {
 };
 
 //heartbeat interval (every 20 seconds)
-let hbInterval = setInterval(heartBeat, 1000)
+let hbInterval = setInterval(heartBeat, 20000)
 // The port on which the server is listening.
 function Device(name, idNumber, source, lampHours, powerState, comState){
     this.name = name
@@ -74,6 +74,7 @@ server.on('connection', function(socket) {
         
         if(chunk.toString() === `ENTR${piMac}[0~0=1]`) {
             s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~17=${projector.powerState}~19=${projector.comState}~20=${projector.lampHours}]\x03`), 5555, '172.17.5.217')
+            msgCounter++
             console.log("Full Update sent")
         }
         else {
@@ -317,7 +318,22 @@ document.getElementById("Laptop").addEventListener("click", function() {
     }
     $(this).data("clicks", !clicks);
   });
+  document.getElementById("mic_Icon").addEventListener("click", function() {
 
+    if (document.getElementById("mic_Icon").value=="unmuted") {
+        document.getElementById("mic_Icon").value = "muted"
+        document.getElementById("mic_Icon").setAttribute('src',"images/Mic_Mute.svg")
+        document.getElementById("mic_Icon").classList.add("mute")
+        writeonSer("\x03")
+    }
+    else if (document.getElementById("mic_Icon").value=="muted") {
+        document.getElementById("mic_Icon").value = "unmuted"
+        document.getElementById("mic_Icon").setAttribute('src',"images/Mic_Icon.svg")
+        document.getElementById("mic_Icon").classList.remove("mute")
+        writeonSer("\x03")
+    }
+   
+} );
   //Microphone Volume 
   $('#micBar').on('input', function(){
     var micValue = $(this).val();
