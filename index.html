@@ -7,25 +7,21 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
    <title>Projector Control</title>
    <!-- Bootstrap -->
-
+   <script src="./bootstrap/js/bootstrap.js"></script>
+   <script>window.Bootstrap = require('bootstrap')</script>
    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="css/bootstrap-reboot.min.css" rel="stylesheet">
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-	
     <!-- Custom styles for this template -->
-    <link href="theme.css" rel="stylesheet">
+    <link href="./bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="./bootstrap/css/bootstrap-reboot.css" rel="stylesheet">
 
+       <link href="theme.css" rel="stylesheet">
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     
-    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
-    <script>window.$ = window.jQuery = require('jquery');</script>
-    <script>window.Bootstrap = require('bootstrap')</script>
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script>
+        require('./componentButton.js')
+    </script>
+    <!-- <script src="componentButton.js"></script> -->
     <!-- <script src="Switcher.js"></script> -->
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -43,19 +39,29 @@
 </div>
 <!--Input buttons -->
 </div >
-  <div class="fixed-row-center container-center">
-  <div><div><button type="button" class="btn btn-source btn-circle btn-xl m-2 " id="Computer"><span class="InputIcon-Computer inputs"></span></button></div>
+<div class="fixed-row-center container-center">
+    <!-- 
+    <div><div><button type="button" class="btn btn-source btn-circle btn-xl m-2 " id="Computer"><span class="InputIcon-Computer inputs"></span></button></div>
   <label class="input-label container-fluid ">Computer</label>
 </div>
   <div><div><button type="button" class="btn btn-source btn-circle btn-xl m-2" id="Laptop"><span class="icon-laptop inputs"></span></button></div>
   <label class="input-label container-fluid ">Laptop</label></div>
 
-  <div><div><button type="button" class="btn btn-source btn-circle btn-xl m-2" id="DocCam"><span class="InputIcon-DocCam inputs"></span></button></div>
+  <div>
+    <div>
+      <button type="button" class="btn btn-source btn-circle btn-xl m-2" id="DocCam">
+        <span class="InputIcon-DocCam inputs">
+
+        </span>
+      </button>
+    </div>
   <label class="input-label container-fluid ">Doc Cam</label></div>
   <div><div><button type="button" class="btn btn-source btn-circle btn-xl m-2" id="BluRay"><span class="InputIcon-BluRay inputs"></span></button></div>
-  <label class="input-label container-fluid ">BluRay</label></div>
+  <label class="input-label container-fluid ">BluRay</label></div> -->
+  <component-button name="Laptop"><span slot="inputIcon" class="InputIcon-DocCam inputs"></span></component-button>
 </div>
 </div>
+
 <!--Volume, Mic, Help Icon and Clock-->
 <div class="container-fluid container-center row-4 fixed-row-bottom" style= " z-index:-1; width:102%; height:30%; background:#231f20; box-shadow: 1px 1px rgba(0, 0, 0, 0.73);" >
   <div class="col-md-1 p-2">

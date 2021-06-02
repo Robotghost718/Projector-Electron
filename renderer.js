@@ -251,73 +251,74 @@ document.getElementById("volumeBar").addEventListener("input", function() {
         }
 
 })
-//1st input button
-document.getElementById("Computer").addEventListener("click", function() {
-        // Call custom function defined in script
-        writeonSer('\x03')
-        s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~18=Computer]\x03`), 5555, '172.17.5.217')                           
-      this.classList.add("selected")
-      document.getElementById("DocCam").classList.remove("selected")
-      document.getElementById("BluRay").classList.remove("selected")
-      document.getElementById("Laptop").classList.remove("selected")
-})
-document.getElementById("DocCam").addEventListener("click", function() {
-    // Call custom function defined in script
-    writeonSer('\x03')
-    s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~18=Doc Cam]\x03`), 5555, '172.17.5.217')                         
-  this.classList.add("selected")
-  document.getElementById("Computer").classList.remove("selected")
-  document.getElementById("BluRay").classList.remove("selected")
-  document.getElementById("Laptop").classList.remove("selected")
-})
-document.getElementById("BluRay").addEventListener("click", function() {
-    // Call custom function defined in script
-    writeonSer('\x03')
-    s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~18=Blu Ray]\x03`), 5555, '172.17.5.217')             
-  this.classList.add("selected")
-  document.getElementById("DocCam").classList.remove("selected")
-  document.getElementById("Computer").classList.remove("selected")
-  document.getElementById("Laptop").classList.remove("selected")
-})
-document.getElementById("Laptop").addEventListener("click", function() {
+// //1st input button
+// document.getElementById("Computer").addEventListener("click", function() {
+//         // Call custom function defined in script
+//         writeonSer('\x03')
+//         s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~18=Computer]\x03`), 5555, '172.17.5.217')                           
+//       this.classList.add("selected")
+//       document.getElementById("DocCam").classList.remove("selected")
+//       document.getElementById("BluRay").classList.remove("selected")
+//       document.getElementById("Laptop").classList.remove("selected")
+// })
+// document.getElementById("DocCam").addEventListener("click", function() {
+//     // Call custom function defined in script
+//     writeonSer('\x03')
+//     s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~18=Doc Cam]\x03`), 5555, '172.17.5.217')                         
+//   this.classList.add("selected")
+//   document.getElementById("Computer").classList.remove("selected")
+//   document.getElementById("BluRay").classList.remove("selected")
+//   document.getElementById("Laptop").classList.remove("selected")
+// })
+// document.getElementById("BluRay").addEventListener("click", function() {
+//     // Call custom function defined in script
+//     writeonSer('\x03')
+//     s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~18=Blu Ray]\x03`), 5555, '172.17.5.217')             
+//   this.classList.add("selected")
+//   document.getElementById("DocCam").classList.remove("selected")
+//   document.getElementById("Computer").classList.remove("selected")
+//   document.getElementById("Laptop").classList.remove("selected")
+// })
+const compBtn = document.querySelector('component-button');
+compBtn.addEventListener("click", function() {
     // Call custom function defined in script
     writeonSer('\x03')
     s.send(Buffer.from(`ENTR${piMac}${counterFormat(msgCounter)}[2~18=Laptop]\x03`), 5555, '172.17.5.217')                          
   this.classList.add("selected")
-  document.getElementById("DocCam").classList.remove("selected")
-  document.getElementById("BluRay").classList.remove("selected")
-  document.getElementById("Computer").classList.remove("selected")
+//   document.getElementById("DocCam").classList.remove("selected")
+//   document.getElementById("BluRay").classList.remove("selected")
+//   document.getElementById("Computer").classList.remove("selected")
 })
-  //Microphone Mute Button
-  $('#mic_Icon').click(function() {
-    var clicks = $(this).data('clicks');
-    if (clicks) {
-      $("#mic_Icon").attr('src',"images/Mic_Icon.svg");
-      $("#micBar").removeAttr('class',"mute");
-       $.get("scripts/Mic/Mic_unmute.php");
+//   //Microphone Mute Button
+//   $('#mic_Icon').click(function() {
+//     var clicks = $(this).data('clicks');
+//     if (clicks) {
+//       $("#mic_Icon").attr('src',"images/Mic_Icon.svg");
+//       $("#micBar").removeAttr('class',"mute");
+//        $.get("scripts/Mic/Mic_unmute.php");
   
-    } else {
-     $("#mic_Icon").attr('src',"images/Mic_Mute.svg");
-      $("#micBar").attr('class',"mute");
-      $.get("scripts/Mic/Mic_mute.php");
-    }
-    $(this).data("clicks", !clicks);
-  });
-  //Volume Mute Button
-  $('#volume_Icon').click(function() {
-    var clicks = $(this).data('clicks');
-    if (clicks) {
-      $("#volume_Icon").attr('src',"images/Volume.svg");
-      $("#volumeBar").removeAttr('class',"mute");
-       $.get("scripts/Volume/Volume_unmute.php");
+//     } else {
+//      $("#mic_Icon").attr('src',"images/Mic_Mute.svg");
+//       $("#micBar").attr('class',"mute");
+//       $.get("scripts/Mic/Mic_mute.php");
+//     }
+//     $(this).data("clicks", !clicks);
+//   });
+//   //Volume Mute Button
+//   $('#volume_Icon').click(function() {
+//     var clicks = $(this).data('clicks');
+//     if (clicks) {
+//       $("#volume_Icon").attr('src',"images/Volume.svg");
+//       $("#volumeBar").removeAttr('class',"mute");
+//        $.get("scripts/Volume/Volume_unmute.php");
   
-    } else {
-     $("#volume_Icon").attr('src',"images/Volume_Mute.svg");
-      $("#volumeBar").attr('class',"mute");
-      $.get("scripts/Volume/Volume_mute.php");
-    }
-    $(this).data("clicks", !clicks);
-  });
+//     } else {
+//      $("#volume_Icon").attr('src',"images/Volume_Mute.svg");
+//       $("#volumeBar").attr('class',"mute");
+//       $.get("scripts/Volume/Volume_mute.php");
+//     }
+//     $(this).data("clicks", !clicks);
+//   });
   document.getElementById("mic_Icon").addEventListener("click", function() {
 
     if (document.getElementById("mic_Icon").value=="unmuted") {
@@ -335,61 +336,61 @@ document.getElementById("Laptop").addEventListener("click", function() {
    
 } );
   //Microphone Volume 
-  $('#micBar').on('input', function(){
-    var micValue = $(this).val();
+//   $('#micBar').on('input', function(){
+//     var micValue = $(this).val();
    
       
-  if (micValue < 1) {
-    $.get("scripts/Mic/Mic_0.php")
-  } 
-  else if (micValue <= 5) {
-     $.get("scripts/Mic/Mic_5.php")
+//   if (micValue < 1) {
+//     $.get("scripts/Mic/Mic_0.php")
+//   } 
+//   else if (micValue <= 5) {
+//      $.get("scripts/Mic/Mic_5.php")
   
-  } 
-  else if (micValue <= 10) {
-     $.get("scripts/Mic/Mic_10.php")
+//   } 
+//   else if (micValue <= 10) {
+//      $.get("scripts/Mic/Mic_10.php")
   
-  } 
-  else if (micValue <= 15) {
-     $.get("scripts/Mic/Mic_15.php")
+//   } 
+//   else if (micValue <= 15) {
+//      $.get("scripts/Mic/Mic_15.php")
   
-  } 
-  else if (micValue <= 20)  {
-     $.get("scripts/Mic/Mic_20.php")
+//   } 
+//   else if (micValue <= 20)  {
+//      $.get("scripts/Mic/Mic_20.php")
   
-  }
-  else if (micValue <= 25) {
-     $.get("scripts/Mic/Mic_25.php")
+//   }
+//   else if (micValue <= 25) {
+//      $.get("scripts/Mic/Mic_25.php")
   
-  } 
-  else if (micValue <= 30)  {
-     $.get("scripts/Mic/Mic_30.php")
+//   } 
+//   else if (micValue <= 30)  {
+//      $.get("scripts/Mic/Mic_30.php")
   
-  }
-  else if (micValue <= 35) {
-     $.get("scripts/Mic/Mic_35.php")
+//   }
+//   else if (micValue <= 35) {
+//      $.get("scripts/Mic/Mic_35.php")
   
-  } 
-  else if (micValue <= 40) {
-     $.get("scripts/Mic/Mic_40.php")
+//   } 
+//   else if (micValue <= 40) {
+//      $.get("scripts/Mic/Mic_40.php")
   
-  }
-  else if (micValue <= 45) {
-     $.get("scripts/Mic/Mic_45.php")
+//   }
+//   else if (micValue <= 45) {
+//      $.get("scripts/Mic/Mic_45.php")
   
-  } 
-  else if (micValue <= 50 ) {
-     $.get("scripts/Mic/Mic_50.php")
+//   } 
+//   else if (micValue <= 50 ) {
+//      $.get("scripts/Mic/Mic_50.php")
   
-  }
-  else if (micValue <= 55) {
-     $.get("scripts/Mic/Mic_55.php")
+//   }
+//   else if (micValue <= 55) {
+//      $.get("scripts/Mic/Mic_55.php")
   
-  } 
-  else {
-     $.get("scripts/Mic/Mic_60.php")
-  }
-  });
+//   } 
+//   else {
+//      $.get("scripts/Mic/Mic_60.php")
+//   }
+//   });
 //   //Clock
   var interval = setInterval(timestamphome, 1000);
   
